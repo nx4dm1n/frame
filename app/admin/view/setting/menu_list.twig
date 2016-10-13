@@ -1,0 +1,27 @@
+<div class="table-responsive">
+    <table class="table table-bordered table-inverse nomargin table-hover">
+        <thead>
+        <tr>
+            <th class="text-center">栏目名称</th>
+            <th class="text-center">操作选项</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for item in allmenu %}
+            <tr>
+                <td>{{ item.name }}</td>
+                <td class="text-left">
+                    <ul class="table-options">
+                        {% if item.pid == 0 %}
+                            <li><a href="{{ webroot_path }}admin/setting/menu_show/pid/{{ item.id }}.html" title="添加子类" data-href-target="#panelbody" class="ajax-link"><i class="fa fa-plus"></i> 添加子类</a></li>
+                        {% endif %}
+                        <li><a href="{{ webroot_path }}admin/setting/menu_show/id/{{ item.id }}.html" title="修改设置" data-href-target="#panelbody" class="ajax-link"><i class="fa fa-pencil"></i> 修改设置</a></li>
+                        <li><a href="javascript:;" title="删除" data-type="post" data-action="{{ webroot_path }}admin/setting/menu_del.html" data-param='{"id":{{ item.id }}}'  data-href="{{ webroot_path }}admin/setting/menu_list.html" data-href-ajax="true" data-href-target="#panelbody"><i class="fa fa-times"></i> 删除</a></li>
+                        <li><a href="javascript:;" title="移动栏目"><i class="fa fa-arrows"></i> 移动栏目</a></li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div><!-- table-responsive -->

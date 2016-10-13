@@ -1,0 +1,29 @@
+<div class="contentpanel">
+    <ol class="breadcrumb breadcrumb-quirk">
+        {% for item in breadcrumb %}
+            <li><a href="{% if item.url %}{{ item.url }}{% else %}javascript:;{% endif %}">{% if item.icon %}<i class="{{ item.icon }}"></i> {% endif %}{{ item.text }}</a></li>
+        {% endfor %}
+    </ol>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel">
+                <div class="panel-heading">
+                    <div class="btn-group" role="group">
+                        <a href="{{ webroot_path }}admin/user/pagelist.html" data-default-click data-href-target="#panelbody" role="button" type="button" class="btn btn-default ajax-link"><i class="fa fa-list"></i> 用户列表</a>
+                        <a href="{{ webroot_path }}admin/user/show.html" data-href-target="#panelbody" role="button" type="button" class="btn btn-default ajax-link"><i class="fa fa-plus"></i> 添加用户</a>
+                    </div>
+                </div>
+                <div class="panel-body" id="panelbody">
+
+                </div>
+            </div><!-- panel -->
+        </div>
+    </div><!-- row -->
+</div><!-- contentpanel -->
+
+<script>
+    $(document).ready(function(){
+        $('[data-default-click]').trigger("click");
+    });
+</script>

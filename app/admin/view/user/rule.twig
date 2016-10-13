@@ -1,0 +1,22 @@
+<div class="table-responsive">
+    <hr>
+    <form class="form-horizontal">
+        <input type="hidden" name="userid" value="{{ userid }}">
+        <table class="table table-bordered table-inverse nomargin table-hover">
+            <tbody>
+            {% autoescape false %}
+                {{ menuhtml }}
+            {% endautoescape %}
+            </tbody>
+        </table>
+
+        <hr>
+
+        <div class="row">
+            <div class="col-sm-12 text-center">
+                <button type="button" data-role="submit" data-type="post" data-target="form" data-action="{{ webroot_path }}admin/user/rule.html" data-href="{{ webroot_path }}admin/user/pagelist.html" data-href-ajax="true" data-href-target="#panelbody" class="btn btn-success btn-quirk btn-wide mr5">保存</button>
+                <button type="reset" class="btn btn-quirk btn-wide btn-default">重置</button>
+            </div>
+        </div>
+    </form>
+</div><!-- table-responsive -->

@@ -1,0 +1,32 @@
+<link rel="stylesheet" href="{{static_url}}quirk/lib/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.css">
+
+<div class="contentpanel">
+    <ol class="breadcrumb breadcrumb-quirk">
+        {% for item in breadcrumb %}
+            <li><a href="{% if item.url %}{{ item.url }}{% else %}javascript:;{% endif %}">{% if item.icon %}<i class="{{ item.icon }}"></i> {% endif %}{{ item.text }}</a></li>
+        {% endfor %}
+    </ol>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel">
+                <div class="panel-heading">
+                    <div class="btn-group" role="group">
+                        <a href="{{ webroot_path }}admin/page/pagelist/is_pass/1/classid/{{ classid }}.html" data-default-click data-href-target="#panelbody" role="button" type="button" class="btn btn-default ajax-link"><i class="fa fa-tachometer"></i> 信息管理</a>
+                        <a href="{{ webroot_path }}admin/page/show/classid/{{ classid }}.html" data-href-target="#panelbody" role="button" type="button" class="btn btn-default ajax-link"><i class="fa fa-tachometer"></i> 添加信息</a>
+                        <a href="{{ webroot_path }}admin/page/pagelist/classid/{{ classid }}/is_pass/0.html" data-href-target="#panelbody"  role="button" type="button" class="btn btn-default ajax-link"><i class="fa fa-trash"></i> 回收站管理</a>
+                    </div>
+                </div>
+                <div class="panel-body" id="panelbody">
+
+                </div>
+            </div><!-- panel -->
+        </div>
+    </div><!-- row -->
+</div><!-- contentpanel -->
+
+<script>
+    $(document).ready(function(){
+        $('[data-default-click]').trigger("click");
+    });
+</script>

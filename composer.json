@@ -1,0 +1,24 @@
+{
+    "name": "qing358/frame",
+    "description": "企业网站框架",
+    "licenses":"MIT",
+    "authors": [
+        {
+            "name": "zhang qing",
+            "email": "490702087@qq.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "app\\": "app",
+            "core\\": "core"
+        },
+        "classmap": ["core/lib/Ctx.php"]
+    },
+    "require": {
+        "twig/twig": "^1.24",
+        "catfan/medoo": "^1.1",
+        "phpmailer/phpmailer": "^5.2",
+        "elasticsearch/elasticsearch": "^2.2"
+    }
+}

@@ -1,0 +1,392 @@
+<link rel="stylesheet" href="{{static_url}}quirk/lib/select2/select2.css">
+
+<div class="contentpanel">
+    <ol class="breadcrumb breadcrumb-quirk">
+        {% for item in breadcrumb %}
+            <li><a href="{% if item.url %}{{ item.url }}{% else %}javascript:;{% endif %}">{% if item.icon %}<i class="{{ item.icon }}"></i> {% endif %}{{ item.text }}</a></li>
+        {% endfor %}
+    </ol>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel">
+                <div class="panel-body" id="panelbody">
+                    <form class="form-horizontal">
+                        <!-- Nav tabs -->
+                        <ul class="nav nav-tabs nav-line">
+                            <li class="active"><a href="#config1" data-toggle="tab"><strong>网站基本设置</strong></a></li>
+                            <li><a href="#config2" data-toggle="tab"><strong>数据库设置</strong></a></li>
+                            <li><a href="#config3" data-toggle="tab"><strong>模板设置</strong></a></li>
+                            <li><a href="#config4" data-toggle="tab"><strong>系统默认项设置</strong></a></li>
+                            <li><a href="#config5" data-toggle="tab"><strong>上传设置</strong></a></li>
+                            <li><a href="#config6" data-toggle="tab"><strong>邮箱服务器设置</strong></a></li>
+                        </ul>
+
+                        <!-- Tab panes -->
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="config1">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">网站名称</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="config['SITE_NAME']" value="{{ config.SITE_NAME }}" class="form-control" placeholder="请输入网站名称" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">网站标题</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="config['SITE_TITLE']" value="{{ config.SITE_TITLE }}" class="form-control" placeholder="请输入网站标题" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">网站SEO关键词</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="config['SITE_KEYWORDS']" value="{{ config.SITE_KEYWORDS }}" class="form-control" placeholder="请输入网站SEO关键词" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">网站SEO描述</label>
+                                    <div class="col-sm-8">
+                                        <textarea name="config['SITE_DESCRIPTION']" class="form-control" rows="3" placeholder="请输入网站SEO描述">{{ config.SITE_DESCRIPTION }}</textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane" id="config2">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">数据库类型 <span class="text-danger">*</span></label>
+                                    <div class="col-sm-8">
+                                        <select class="select2" name="config['DB_TYPE']" style="width: 100%" data-placeholder="请选择数据库类型" data-check='noNull' data-tip='请选择数据库类型'>
+                                            <option value="mysql" {% if config.DB_TYPE == 'mysql' %} selected {% endif %}>MySql</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">服务器地址 <span class="text-danger">*</span></label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="config['DB_HOST']" value="{{ config.DB_HOST }}" class="form-control" placeholder="请输入服务器地址" data-check='noNull' data-tip='数据库服务器地址不能为空' />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">服务器端口 <span class="text-danger">*</span></label>
+                                    <div class="col-sm-8">
+                                        <input type="number" name="config['DB_PORT']" value="{{ config.DB_PORT }}" class="form-control" placeholder="请输入服务器端口" data-check='noNull,onlyNum' data-tip='数据库端口号不能为空且只能是数字' />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">用户名 <span class="text-danger">*</span></label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="config['DB_USER']" value="{{ config.DB_USER }}" class="form-control" placeholder="请输入用户名" data-check='noNull' data-tip='数据库连接用户名不能为空' />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">密码 <span class="text-danger">*</span></label>
+                                    <div class="col-sm-8">
+                                        <input type="password" name="config['DB_PWD']" value="{{ config.DB_PWD }}" class="form-control" placeholder="请输入密码" data-check='noNull' data-tip='数据库连接密码不能为空' />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">数据库名 <span class="text-danger">*</span></label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="config['DB_NAME']" value="{{ config.DB_NAME }}" class="form-control" placeholder="请输入数据库名" data-check='noNull' data-tip='数据库名不能为空' />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">数据库表前缀</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="config['DB_PREFIX']" value="{{ config.DB_PREFIX }}" class="form-control" placeholder="请输入数据库表前缀" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">数据库编码</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="config['DB_CHARSET']" value="{{ config.DB_CHARSET }}" class="form-control" placeholder="请输入数据库编码，默认采用utf8" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane" id="config3">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">模板输出编码 <span class="text-danger">*</span></label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="config['TMPL_TEMPLATE_CHARSET']" value="{{ config.TMPL_TEMPLATE_CHARSET }}" class="form-control" placeholder="请输入模板输出编码" data-check='noNull' data-tip='模板输出编码不能为空' />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">模板文件后缀 <span class="text-danger">*</span></label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="config['TMPL_TEMPLATE_SUFFIX']" value="{{ config.TMPL_TEMPLATE_SUFFIX }}" class="form-control" placeholder="请输入模板文件后缀" data-check='noNull' data-tip='模板文件后缀不能为空' />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">是否开启模板缓存</label>
+                                    <div class="col-sm-8">
+                                        <select class="select2" name="config['TMPL_TEMPLATE_CACHE']" style="width: 100%" data-placeholder="请选择是否开启模板缓存">
+                                            <option value="true" {% if true == config['TMPL_TEMPLATE_CACHE'] %} selected {% endif %}>是</option>
+                                            <option value="false" {% if false == config['TMPL_TEMPLATE_CACHE'] %} selected {% endif %}>否</option>
+                                        </select>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane" id="config4">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">默认时区 <span class="text-danger">*</span></label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="config['DEFAULT_TIMEZONE']" value="{{ config.DEFAULT_TIMEZONE }}" class="form-control" placeholder="请输入默认时区" data-check='noNull' data-tip='默认时区不能为空' />
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">默认模块 <span class="text-danger">*</span></label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="config['DEFAULT_MODULE']" value="{{ config.DEFAULT_MODULE }}" class="form-control" placeholder="请输入默认模块" data-check='noNull' data-tip='默认模块不能为空' />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">默认的控制器层名称 <span class="text-danger">*</span></label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="config['DEFAULT_C_LAYER']" value="{{ config.DEFAULT_C_LAYER }}" class="form-control" placeholder="请输入默认的控制器层名称" data-check='noNull' data-tip='默认的控制器层名称不能为空' />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">默认的模型层名称 <span class="text-danger">*</span></label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="config['DEFAULT_M_LAYER']" value="{{ config.DEFAULT_M_LAYER }}" class="form-control" placeholder="请输入默认的模型层名称" data-check='noNull' data-tip='默认的模型层名称不能为空' />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">默认的视图层名称 <span class="text-danger">*</span></label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="config['DEFAULT_V_LAYER']" value="{{ config.DEFAULT_V_LAYER }}" class="form-control" placeholder="请输入默认的视图层名称" data-check='noNull' data-tip='默认的视图层名称不能为空' />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">默认控制器 <span class="text-danger">*</span></label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="config['DEFAULT_CONTROLLER']" value="{{ config.DEFAULT_CONTROLLER }}" class="form-control" placeholder="请输入默认控制器" data-check='noNull' data-tip='默认控制器不能为空' />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">默认方法 <span class="text-danger">*</span></label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="config['DEFAULT_ACTION']" value="{{ config.DEFAULT_ACTION }}" class="form-control" placeholder="请输入默认方法" data-check='noNull' data-tip='默认方法不能为空' />
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">默认AJAX数据返回格式 <span class="text-danger">*</span></label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="config['DEFAULT_AJAX_RETURN']" value="{{ config.DEFAULT_AJAX_RETURN }}" class="form-control" placeholder="请输入默认AJAX数据返回格式，可选JSON XML ..." data-check='noNull' data-tip='默认AJAX数据返回格式不能为空' />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">默认JSONP格式返回的处理方法 <span class="text-danger">*</span></label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="config['DEFAULT_JSONP_HANDLER']" value="{{ config.DEFAULT_JSONP_HANDLER }}" class="form-control" placeholder="请输入默认JSONP格式返回的处理方法" data-check='noNull' data-tip='默认JSONP格式返回的处理方法' />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">JSONP格式返回的处理方法通过该参数名称中的值指定</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="config['VAR_JSONP_HANDLER']" value="{{ config.VAR_JSONP_HANDLER }}" class="form-control" placeholder="请输入JSONP格式返回的处理方法通过该参数名称中的值指定" />
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">默认参数过滤方法</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="config['DEFAULT_FILTER']" value="{{ config.DEFAULT_FILTER }}" class="form-control" placeholder="请输入默认参数过滤方法，用于I函数" />
+                                        <span class="help-block text-warning">多个用“|”分隔</span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">输入变量是否自动强制转换为字符串 <span class="text-danger">*</span></label>
+                                    <div class="col-sm-8">
+                                        <select class="select2" name="config['VAR_AUTO_STRING']" style="width: 100%" data-placeholder="请选择是否自动强制转换为字符串" data-check='noNull' data-tip='请选择是否自动强制转换为字符串'>
+                                            <option value="true" {% if true == config['VAR_AUTO_STRING'] %} selected {% endif %}>是</option>
+                                            <option value="false" {% if false == config['VAR_AUTO_STRING'] %} selected {% endif %}>否</option>
+                                        </select>
+                                        <span class="help-block text-warning">如果开启（是），则数组变量需要手动传入变量修饰符获取变量，建设关闭（否）</span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">兼容模式PATHINFO获取变量 <span class="text-danger">*</span></label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="config['VAR_PATHINFO']" value="{{ config.VAR_PATHINFO }}" class="form-control" placeholder="请输入兼容模式PATHINFO获取变量" data-check='noNull' data-tip='兼容模式PATHINFO获取变量不能为空' />
+                                        <span class="help-block text-warning">例如 ?s=/module/action/id/1</span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">URL伪静态后缀设置 <span class="text-danger">*</span></label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="config['URL_HTML_SUFFIX']" value="{{ config.URL_HTML_SUFFIX }}" class="form-control" placeholder="请输入URL伪静态后缀设置" data-check='noNull' data-tip='URL伪静态后缀设置不能为空' />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane" id="config5">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">允许上传的图片格式</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="config['UPLOAD_IMAGE_EXT']" value="{{ config.UPLOAD_IMAGE_EXT }}" class="form-control" placeholder="请输入允许上传的图片格式" />
+                                        <span class="help-block text-warning">多个用“|”分隔，如：bmp|png|jpeg|gif|jpg</span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">每次上传图片最大限制（KB）</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="config['UPLOAD_IMAGE_MAXSIZE']" value="{{ config.UPLOAD_IMAGE_MAXSIZE }}" class="form-control" placeholder="请输入每次上传图片最大限制（KB）" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">图片上传保存位置</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="config['UPLOAD_IMAGE_FOLDER']" value="{{ config.UPLOAD_IMAGE_FOLDER }}" class="form-control" placeholder="请输入图片上传保存位置" />
+                                        <span class="help-block text-warning">填写相对路径即可，默认相对站点根目录，所填路径最后的“/”必须加上</span>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">允许上传的文件格式</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="config['UPLOAD_FILE_EXT']" value="{{ config.UPLOAD_FILE_EXT }}" class="form-control" placeholder="请输入允许上传的文件格式" />
+                                        <span class="help-block text-warning">多个用“|”分隔，如：doc|docx|xls|xlsx|ppt</span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">每次上传文件最大限制（KB）</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="config['UPLOAD_FILE_MAXSIZE']" value="{{ config.UPLOAD_FILE_MAXSIZE }}" class="form-control" placeholder="请输入每次上传文件最大限制（KB）" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">文件上传保存位置</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="config['UPLOAD_FILE_FOLDER']" value="{{ config.UPLOAD_FILE_FOLDER }}" class="form-control" placeholder="请输入文件上传保存位置" />
+                                        <span class="help-block text-warning">填写相对路径即可，默认相对站点根目录，所填路径最后的“/”必须加上</span>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">允许上传的视频文件格式</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="config['UPLOAD_VIDEO_EXT']" value="{{ config.UPLOAD_VIDEO_EXT }}" class="form-control" placeholder="请输入允许上传的视频文件格式" />
+                                        <span class="help-block text-warning">多个用“|”分隔，如：mov|wmv|mp4|webm|mp3</span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">每次上传视频最大限制（KB）</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="config['UPLOAD_VIDEO_MAXSIZE']" value="{{ config.UPLOAD_VIDEO_MAXSIZE }}" class="form-control" placeholder="请输入每次上传视频最大限制（KB）" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">视频上传保存位置</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="config['UPLOAD_VIDEO_FOLDER']" value="{{ config.UPLOAD_VIDEO_FOLDER }}" class="form-control" placeholder="请输入视频上传保存位置" />
+                                        <span class="help-block text-warning">填写相对路径即可，默认相对站点根目录，所填路径最后的“/”必须加上</span>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">涂鸦图片保存格式</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="config['UPLOAD_SCRAWL_EXT']" value="{{ config.UPLOAD_SCRAWL_EXT }}" class="form-control" placeholder="请输入ueditor：涂鸦图片保存格式" />
+                                        <span class="help-block text-warning">用于ueditor涂鸦 ，只能填写图片文件类型的格式且只能输出单个扩展类型，如：png</span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">每次上传视频最大限制（KB）</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="config['UPLOAD_SCRAWL_MAXSIZE']" value="{{ config.UPLOAD_SCRAWL_MAXSIZE }}" class="form-control" placeholder="请输入每次上传视频最大限制（KB）" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">涂鸦图片保存位置</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="config['UPLOAD_SCRAWL_FOLDER']" value="{{ config.UPLOAD_SCRAWL_FOLDER }}" class="form-control" placeholder="请输入涂鸦图片保存位置" />
+                                        <span class="help-block text-warning">填写相对路径即可，默认相对站点根目录，所填路径最后的“/”必须加上</span>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">截图图片保存格式</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="config['UPLOAD_SNAPSCREEN_EXT']" value="{{ config.UPLOAD_SNAPSCREEN_EXT }}" class="form-control" placeholder="请输入ueditor：截图图片保存格式" />
+                                        <span class="help-block text-warning">用于ueditor截图 ，只能填写图片文件类型的格式且只能输出单个扩展类型，如：png</span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">每次上传视频最大限制（KB）</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="config['UPLOAD_SNAPSCREEN_MAXSIZE']" value="{{ config.UPLOAD_SNAPSCREEN_MAXSIZE }}" class="form-control" placeholder="请输入每次上传视频最大限制（KB）" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">截图图片保存位置</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="config['UPLOAD_SNAPSCREEN_FOLDER']" value="{{ config.UPLOAD_SNAPSCREEN_FOLDER }}" class="form-control" placeholder="请输入截图图片保存位置" />
+                                        <span class="help-block text-warning">填写相对路径即可，默认相对站点根目录，所填路径最后的“/”必须加上</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane" id="config6">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">SMTP服务器</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="config['MAIL_SMTP_HOST']" value="{{ config.MAIL_SMTP_HOST }}" class="form-control" placeholder="请输入SMTP服务器" data-check='noNull' data-tip='SMTP服务器不能为空' />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">SMTP服务器端口</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="config['MAIL_SMTP_PORT']" value="{{ config.MAIL_SMTP_PORT }}" class="form-control" placeholder="请输入SMTP服务器端口" data-check='noNull' data-tip='SMTP服务器端口不能为空' />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">SMTP服务器用户名</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="config['MAIL_SMTP_USERNAME']" value="{{ config.MAIL_SMTP_USERNAME }}" class="form-control" placeholder="请输入SMTP服务器用户名" data-check='noNull' data-tip='SMTP服务器用户名不能为空' />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">SMTP服务器密码</label>
+                                    <div class="col-sm-8">
+                                        <input type="password" name="config['MAIL_SMTP_PASSWORD']" value="{{ config.MAIL_SMTP_PASSWORD }}" class="form-control" placeholder="请输入SMTP服务器密码" data-check='noNull' data-tip='SMTP服务器密码不能为空' />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">安全模式</label>
+                                    <div class="col-sm-8">
+                                        <select class="select2" name="config['MAIL_SMTP_SMTPSECURE']" style="width: 100%">
+                                            <option value="" {% if '' == config['MAIL_SMTP_SMTPSECURE'] %} selected {% endif %}>无</option>
+                                            <option value="ssl" {% if 'ssl' == config['MAIL_SMTP_SMTPSECURE'] %} selected {% endif %}>SSL</option>
+                                            <option value="tls" {% if 'tls' == config['MAIL_SMTP_SMTPSECURE'] %} selected {% endif %}>TLS</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr>
+
+                        <div class="row">
+                            <div class="col-sm-12 text-center">
+                                <button type="button" data-role="submit" data-type="post" data-target="form" data-action="{{ webroot_path }}admin/setting/config_save.html" class="btn btn-success btn-quirk btn-wide mr5">保存</button>
+                                <button type="reset" class="btn btn-quirk btn-wide btn-default">重置</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div><!-- panel -->
+        </div>
+    </div><!-- row -->
+</div><!-- contentpanel -->
+
+<script src="{{static_url}}quirk/lib/select2/select2.js"></script>
+<script src="{{static_url}}quirk/lib/jquery-autosize/autosize.js"></script>
+<script>
+    $(document).ready(function() {
+        $('.select2').select2();
+
+        // Textarea Auto Resize
+        autosize($('textarea[name="description"]'));
+    });
+</script>

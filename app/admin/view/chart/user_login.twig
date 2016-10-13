@@ -1,0 +1,219 @@
+<link rel="stylesheet" href="{{static_url}}quirk/lib/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.css">
+<link rel="stylesheet" href="{{static_url}}quirk/lib/date-time/daterangepicker.css" />
+
+<div class="contentpanel">
+    <ol class="breadcrumb breadcrumb-quirk">
+        {% for item in breadcrumb %}
+            <li><a href="{% if item.url %}{{ item.url }}{% else %}javascript:;{% endif %}">{% if item.icon %}<i class="{{ item.icon }}"></i> {% endif %}{{ item.text }}</a></li>
+        {% endfor %}
+    </ol>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-md-10">
+                            <form class="form-inline">
+                                <div class="form-group col-md-3">
+                                    <label class="sr-only" for="reservation">日期</label>
+                                    <div class="input-group col-md-12">
+                                        <div class="add-on input-group-addon"><i class="fa fa-calendar"></i></div>
+                                        <input type="text" class="form-control" style="cursor:pointer" readonly id="reservation" name="reservation" placeholder="请选择日期" value="2016-10-05 to 2016-10-09">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-md-2" id="actionbtns">
+                            <button type="button" class="btn btn-success" id="openall">打开所有图例</button>
+                            <button type="button" class="btn btn-success" id="closeall">关闭所有图例</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-body" id="panelbody">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div id="chart" class="chartbox"></div>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table id="exRowTable" class="table table-bordered table-inverse table-hover">
+                            <thead>
+
+                            </thead>
+
+                            <tbody>
+
+                            </tbody>
+
+                        </table>
+                    </div><!-- table-responsive -->
+                </div>
+            </div><!-- panel -->
+        </div>
+    </div><!-- row -->
+</div><!-- contentpanel -->
+
+<script src="{{static_url}}quirk/lib/date-time/moment.js"></script>
+<script src="{{static_url}}quirk/lib/date-time/daterangepicker.js"></script>
+<script src="{{static_url}}quirk/lib/datatables/jquery.dataTables.js"></script>
+<script src="{{static_url}}quirk/lib/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.js"></script>
+<script src="{{static_url}}quirk/lib/echarts/echarts.min.js"></script>
+<script>
+    $(document).ready(function(){
+        /**
+         * 图表初始化
+         */
+        var chart = echarts.init(document.getElementById('chart'));
+
+        /**
+         * 初始化表格控件
+         */
+        var data_table=$('#exRowTable').DataTable({
+            "language"              : {"url":"{{static_url}}quirk/lib/datatables/local/ch.json"},
+            "processing"            : true,
+            "searchDelay"           : 1500,
+            "columnDefs"            : [
+                {
+                    "targets"   : '_all',
+                    "searchable": true,
+                    "orderable" : true
+                }
+            ],
+            "columns"               : [
+                {
+                    "name"      : "date",
+                    "title"     : '日期'
+                },
+                {
+                    "name"      : "all",
+                    "title"     : "全部用户"
+                },
+                {
+                    "name"      : "ios",
+                    "title"     : "IOS用户"
+                },
+                {
+                    "name"      : "android",
+                    "title"     : "Android用户",
+                },
+                {
+                    "name"      : "other",
+                    "title"     : "其它用户"
+                },
+                {
+                    "name"      : "robot",
+                    "title"     : "机器人"
+                },
+                {
+                    "name"      : "pc",
+                    "title"     : "电脑"
+                }
+            ],
+            "order"                 : [[ 0, "desc" ]]
+        });
+
+        /**
+         * 通用数据获取函数（AJAX）
+         * @param os	    系统
+         * @param channel	渠道
+         * @param date		查询日期
+         * @param url		请求PHP页面地址
+         */
+        function get_data(os, channel, date, url){
+            var defer = $.Deferred();
+            $.ajax({
+                type: "post",
+                async: true, //异步执行
+                url: url,
+                data:{os:os, channel:channel, date:date},
+                dataType: "json", //返回数据形式为json
+                beforeSend:function(){
+
+                },
+                success: function (result) {
+                    defer.resolve(result)
+                },
+                error: function(){
+                    $.tip('请求服务器出错', 'error');
+                }
+            });
+            return defer.promise();
+        }
+
+        // 初始化控件数据
+        reload_data();
+        // 初始化控件数据 end
+
+        // 根据条件重新加载数据
+        function reload_data(){
+            chart.clear();
+            chart.showLoading({effect:'whirling'});
+            $('#exRowTable tbody tr').remove();
+
+            var date    = $("input[name='reservation']").attr('value');
+            var channel = $("select#channel").val();
+            var os      = $("select#os").val();
+
+            $.when(get_data(os, channel, date,"{{ webroot_path }}admin/chart/user_login.html")).done(function(option){
+                chart.hideLoading();
+                chart.setOption(option);
+                table_list(option);
+            });
+        }// 根据条件重新加载数据 end
+
+
+
+
+        // 日期选择事件
+        $('#reservation').daterangepicker({
+            maxDate : moment(),
+            ranges : {
+                '今日': [moment().startOf('day'), moment()],
+                '一周内': [moment().subtract('days', 6), moment()],
+                '一月内': [moment().subtract('days', 29), moment()]
+            }
+
+        }, function(start, end) {
+            $("#reservation").attr('value',(new moment(start)).format("YYYY-MM-DD")+' to '+(new moment(end)).format("YYYY-MM-DD"));
+            //reload_data();
+        });  // 日期选择事件 end
+
+        /*table统计*/
+        function table_list(option){
+            $('#exRowTable thead,#exRowTable tbody').remove();
+            if(option){
+                var html='';
+                html+='<thead>';
+                html+='<tr>';
+                html+='<th>日期</th>';
+                for(var i=0; i<option.legend.data.length; i++){
+                    html+='<th>'+option.legend.data[i]+'</th>';
+                }
+                html+='</tr>';
+                html+='</thead>';
+
+                html+='<tbody>';
+                for(var i in option.xAxis.data){
+                    html+='<tr>';
+                    html+='<td>'+option.xAxis.data[i]+'</td>';
+                    for(var j in option.series){
+                        tdval=option.series[j].data[i];
+                        if (tdval == 0) {
+                            tdval='-';
+                        }
+                        html+='<td>'+tdval+'</td>';
+                    }
+                    html+='</tr>';
+                }
+                html+='</tbody>';
+                $('#exRowTable').append(html);
+            }else{
+                $('#exRowTable tbody').append('<tr><td colspan="10" align="center" style="padding:50px;">当前时间段暂无数据</td></tr>');
+            }
+        }
+        /*table统计结束*/
+
+    });
+</script>
