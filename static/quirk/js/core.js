@@ -51,27 +51,26 @@
  * $.LoadAjaxContent(url)
  */
 !function ($) {
-    $.extend({
+	$.extend({
         LoadAjaxContent: function (url, target) {
-            $.ajax({
-                mimeType    : 'text/html; charset=utf-8', // ! Need set mimeType only when run from local file
-                url         : url,
-                type        : 'GET',
-                cache       : false,
-                beforeSend  : function(){
-                    $(target).empty();
-                    $(target).html('<div class="preloader"><i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span class="sr-only">Loading...</span></div>');
-                },
-                success     : function(data) {
-                    $(target).empty();
-                    $(target).html(data);
-                },
-                error       : function (jqXHR, textStatus, errorThrown) {
-                    alert(errorThrown);
-                },
-                dataType    : "html",
-                async       : true
-            });
+            $.when($.ajax({
+                    mimeType    : 'text/html; charset=utf-8', // ! Need set mimeType only when run from local file
+                    url         : url,
+                    type        : 'GET',
+                    cache       : false,
+                    beforeSend  : function(){
+                        $(target).empty();
+                        $(target).html('<div class="preloader"><i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span class="sr-only">Loading...</span></div>');
+                    },
+                    error       : function (jqXHR, textStatus, errorThrown) {
+                        alert(errorThrown);
+                    },
+                    dataType    : "html",
+                    async       : true
+                })).done(function(data){
+                	$(target).empty();
+                	$(target).html(data);
+            	});
         }
     })
 }($)
