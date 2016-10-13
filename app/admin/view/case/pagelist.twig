@@ -1,0 +1,261 @@
+<link rel="stylesheet" href="{{static_url}}quirk/lib/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.css">
+
+<div class="table-responsive">
+    <table id="exRowTable" class="table table-bordered table-inverse table-hover">
+
+    </table>
+</div><!-- table-responsive -->
+<script src="{{static_url}}quirk/lib/datatables/jquery.dataTables.js"></script>
+<script src="{{static_url}}quirk/lib/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.js"></script>
+<script>
+    $(document).ready(function(){
+        /**
+         * 初始化表格控件
+         */
+        var data_table=$('#exRowTable').DataTable({
+            "language"              : {"url":"{{static_url}}quirk/lib/datatables/local/ch.json"},
+            "dom": '<"row"<"col-sm-1"l><"col-sm-1"<"toolbar-category">><"col-sm-1"<"toolbar-select">><"col-sm-1"<"toolbar-action">><"col-sm-8"f>><"row"<"col-sm-12"tr>><"row"<"col-sm-5"i><"col-sm-7"p>>',
+            "processing"            : true,
+            "serverSide"            : true,
+            "ajax"                  : {
+                "url"           : "{{ webroot_path }}admin/case/pagelist/is_pass/{{ is_pass }}.html",
+                "type"          : "POST"
+                //,
+                //"data": function ( d ) {
+                //    d.is_pass = {{ is_pass }}
+                //}
+            },
+            "lengthMenu": [[20, 40, 60, -1], [20, 40, 60, "全部"]],
+            "searchDelay"           : 1500,
+            "columnDefs"            : [
+                {
+                    "targets"   : '_all',
+                    "searchable": false
+                }
+            ],
+            "columns"               : [
+                {
+                    "data"      : "id",
+                    "name"      : "id",
+                    "title"     : 'ID',
+                    "width"     : "6%",
+                    "render"    : function ( data, type, row ) {
+                        return '<label class="ckbox ckbox-success"><input name="id[]" type="checkbox" value="'+data+'"> <span>'+data+'</span></label>';
+                    }
+                },
+                {
+                    "data"      : "title",
+                    "name"      : "title",
+                    "title"     : "标题",
+                    "searchable": true,
+                    "orderable" : false
+                },
+                {
+                    "data"      : "classid",
+                    "name"      : "classid",
+                    "title"     : "所属栏目",
+                    "orderable" : false,
+                    "width"     : "8%"
+                },
+                {
+                    "data"      : "order_num",
+                    "name"      : "order_num",
+                    "title"     : "排序",
+                    "width"     : "6%",
+                    "render"    : function ( data, type, row ) {
+                        return '<span class="badge badge-primary">'+data+'</span>';
+                    }
+                },
+                {
+                    "data"      : "hits",
+                    "name"      : "hits",
+                    "title"     : "阅读",
+                    "width"     : "6%",
+                    "render"    : function ( data, type, row ) {
+                        return '<span class="badge badge-primary">'+data+'</span>';
+                    }
+                },
+                {
+                    "data"      : "is_recommend",
+                    "name"      : "is_recommend",
+                    "title"     : "推荐",
+                    "orderable" : false,
+                    "width"     : "6%",
+                    "render"    : function ( data, type, row ) {
+                        return data==1 ? '<span class="label label-success arrowed arrowed-right">推荐</span>' : '';
+                    }
+                },
+                {
+                    "data"      : "last_update",
+                    "name"      : "last_update",
+                    "title"     : "最后修改",
+                    "width"     : "10%"
+                },
+                {
+                    "data"      : null,
+                    "title"     : "操作",
+                    "orderable" : false,
+                    "width"     : "12%",
+                    "render"    : function ( data, type, row ) {
+                        var edit_html           ='<a href="{{ webroot_path }}admin/case/show/id/'+row.id+'.html" title="修改" data-href-target="#panelbody" class="ajax-link"><i class="fa fa-pencil"></i> 修改</a>&nbsp;&nbsp;',
+                                addtorecycle_html   ='<a href="javascript:;" title="放入回收站" data-param=\'{"value":0, "id":'+row.id+'}\' class="addtotrash"><i class="fa fa-trash"></i> 放入回收站</a>&nbsp;&nbsp;',
+                                restore_html   ='<a href="javascript:;" title="还原" data-param=\'{"value":1, "id":'+row.id+'}\' class="reduction"><i class="fa fa-mail-reply"></i> 还原</a>&nbsp;&nbsp;',
+                                delete_html         ='<a href="javascript:;" title="彻底删除" data-param=\'{"id":'+row.id+'}\' class="deletebtn"><i class="fa fa-times"></i> 彻底删除</a>',
+                                operation_html=edit_html;
+                        if (row['is_pass']==='1') {
+                            operation_html+=addtorecycle_html;
+                        }else{
+                            operation_html+=restore_html+delete_html;
+                        }
+
+                        return operation_html;
+                    }
+                }
+            ],
+            "order"                 : [[ 0, "desc" ]]
+        }).on('init', function(){
+            $("div.toolbar-category").html('<select class="form-control"><option value="">全部栏目</option>{% for item in categorys %}<option value="{{ item.id }}">{{ item.name }}</option>{% endfor %}</select>');
+            $("div.toolbar-select").html('<select name="select" class="form-control">' +
+                    '<option value="0">选择</option>' +
+                    '<option value="1">全选</option>' +
+                    '<option value="2">反选</option>' +
+                    '<option value="3">全不选</option>' +
+                    '</select>');
+            $("div.toolbar-action").html('<select name="action" class="form-control">{% for itemkey, itemvalue in action_list %}<option value="{{ itemkey }}">{{ itemvalue }}</option>{% endfor %}</select>');
+        });
+
+        /**
+         * 放入回收站/从回收站还原
+         */
+        $(document).off('click', 'a.reduction, a.addtotrash');   // 必须取消全部“click”事件，否则后果很严重~~因为每一次用ajax加载页面时都会为元素添加“click”事件，会导致多次触发多次
+        $(document).on('click', 'a.reduction, a.addtotrash', function(e){
+            var param=(typeof $(this).attr('data-param'))=='string' ? $.parseJSON($(this).attr('data-param')) : $(this).attr('data-param');
+            doXhr('{{ webroot_path }}admin/case/set_pass.html', param);
+        });
+
+        /**
+         * 彻底删除
+         */
+        $(document).off('click', 'a.deletebtn');   // 必须取消全部“click”事件，否则后果很严重~~因为每一次用ajax加载页面时都会为元素添加“click”事件，会导致多次触发多次
+        $(document).on('click', 'a.deletebtn', function(e){
+            var param=(typeof $(this).attr('data-param'))=='string' ? $.parseJSON($(this).attr('data-param')) : $(this).attr('data-param');
+            $.popBox.show({
+                html:'此操作<b style="color: red;">不可逆</b>，确定要继续吗？',
+                submitFn:function(){
+                    doXhr('{{ webroot_path }}admin/case/remove.html', param);
+                }
+            });
+        });
+
+
+        /**
+         * 按栏目筛选
+         */
+        $(document).off('change', 'div.toolbar-category>select');   // 必须取消全部“change”事件，否则后果很严重~~因为每一次用ajax加载页面时都会为元素添加“change”事件，会导致多次触发多次
+        $(document).on('change', 'div.toolbar-category>select', function(e){
+            var selected=$(this).find('option:selected').val();
+            data_table.ajax.url( '{{ webroot_path }}admin/case/pagelist/is_pass/{{ is_pass }}/classid/'+selected+'.html' ).load();
+        });
+
+        /**
+         * 选择操作
+         */
+        $(document).off('change', 'div.toolbar-select>select');   // 必须取消全部“change”事件，否则后果很严重~~因为每一次用ajax加载页面时都会为元素添加“change”事件，会导致多次触发多次
+        $(document).on('change', 'div.toolbar-select>select', function(){
+            var selected=$(this).find('option:selected').val();
+            if (selected!=0) {
+                switch ($(this).find('option:selected').val()) {
+                    case "1" :  // 全选
+                        $('#exRowTable input:checkbox').attr("checked",false);
+                        $('#exRowTable input:checkbox').trigger('click');   // 这里用 click事件实现，因为span标签在点击时才会有:after属性，不然没效果
+                        break;
+                    case "2" :  // 反选
+                        $('#exRowTable input:checkbox').trigger('click');   // 这里用 click事件实现，因为span标签在点击时才会有:after属性，不然没效果
+                        break;
+                    case "3" :  // 全不选
+                        $("#exRowTable input:checkbox").attr("checked", false);
+                        break;
+                }
+            }
+
+            // 复位下拉框的“选择”项
+            $(this).find('option').attr("selected",false);
+            $(this).find('option:first-child').attr("selected",true);
+        });
+
+        /**
+         * 执行 选择 的操作
+         */
+        $(document).off('change', 'div.toolbar-action>select');   // 必须取消全部“change”事件，否则后果很严重~~因为每一次用ajax加载页面时都会为元素添加“change”事件，会导致多次触发多次
+        $(document).on('change', 'div.toolbar-action>select', function(){
+            var selected=$(this).find('option:selected').val();
+            if (selected!=0) {  // 这里如果不判断，下面的复位操作就会再次执行，因为监听的是“change”事件
+                doAction(selected);
+            }
+
+            // 复位下拉框的“操作”项
+            $(this).find('option').attr("selected",false);
+            $(this).find('option:first-child').attr("selected",true);
+        });
+
+        function doAction(selected){
+            var id=new Array(), url, data;
+            $("#exRowTable input:checked").each(function(){
+                id.push($(this).val());
+            });
+            if(id.length<=0){
+                $.tip('请选择需要操作的记录', 'error');
+                return false;
+            }
+            switch (selected) {
+                case "1" :  // 推荐
+                    url='{{ webroot_path }}admin/case/set_recommend.html';
+                    data={"id":id, "value":1};
+                    break;
+                case "2" :  // 取消推荐
+                    url='{{ webroot_path }}admin/case/set_recommend.html';
+                    data={"id":id, "value":0};
+                    break;
+                case "3" :  // 加入回收站
+                    url='{{ webroot_path }}admin/case/set_pass.html';
+                    data={"id":id, "value":0};
+                    break;
+                case "4" :  // 彻底删除
+                    url='{{ webroot_path }}admin/case/remove.html';
+                    data={"id":id};
+                    break;
+                case "5" :  // 从回收站还原
+                    url='{{ webroot_path }}admin/case/set_pass.html';
+                    data={"id":id, "value":1};
+                    break;
+            }
+            if(url && data){
+                if (selected=="4") {
+                    $.popBox.show({
+                        html:'此操作<b style="color: red;">不可逆</b>，确定要继续吗？',
+                        submitFn:function(){
+                            doXhr(url, data);
+                        }
+                    });
+                }else{
+                    doXhr(url, data);
+                }
+            }
+        }
+
+        /**
+         * 执行 按操作的选择发送至服务器
+         */
+        function doXhr(url, data){
+            $.post(url, data, function(data){
+                if (data.ec==200) {
+                    $.tip(data.em, 'success');
+                    data_table.ajax.reload();
+                }else{
+                    $.tip(data.em, 'error');
+                }
+            }, 'json');
+        }
+    });
+
+</script>

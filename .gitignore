@@ -1,0 +1,7 @@
+/.idea
+/php/upload
+/php/runtime
+/php/composer.lock
+/php/vendor
+composer.lock
+/vendor

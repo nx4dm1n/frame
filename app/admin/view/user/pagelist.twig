@@ -1,0 +1,160 @@
+<link rel="stylesheet" href="{{static_url}}quirk/lib/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.css">
+
+<div class="table-responsive">
+    <table id="exRowTable" class="table table-bordered table-inverse table-hover">
+
+    </table>
+</div><!-- table-responsive -->
+
+<script src="{{static_url}}quirk/lib/datatables/jquery.dataTables.js"></script>
+<script src="{{static_url}}quirk/lib/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.js"></script>
+<script>
+    $(document).ready(function(){
+        // 初始化表格控件
+        var data_table=$('#exRowTable').DataTable({
+            "language"              : {"url":"{{static_url}}quirk/lib/datatables/local/ch.json"},
+            "processing"            : true,
+            "serverSide"            : true,
+            "ajax"                  : {
+                "url"           : "{{ webroot_path }}admin/user/pagelist.html",
+                "type"          : "POST"
+            },
+            "lengthMenu": [[20, 40, 60, -1], [20, 40, 60, "全部"]],
+            "searchDelay"           : 1500,
+            "columnDefs"            : [
+                {
+                    "targets"   : '_all',
+                    "searchable": false,
+                    "orderable" : false
+                }
+            ],
+            "columns"               : [
+                {
+                    "data"      : "id",
+                    "name"      : "id",
+                    "orderable" : true,
+                    "title"     :'ID',
+                    "width"     : "6%"
+                },
+                {
+                    "data"      : "username",
+                    "name"      : "username",
+                    "title"     :"用户名",
+                    "searchable": true
+                },
+                {
+                    "data"      : "name",
+                    "name"      : "name",
+                    "title"     :"姓名",
+                    "searchable": true,
+                    "width"     : "8%"
+                },
+                {
+                    "data"      : "sex",
+                    "name"      : "sex",
+                    "title"     :"性别",
+                    "width"     : "6%",
+                    "render"    : function ( data, type, row ) {
+                        return data==1 ? '男' : '女';
+                    }
+                },
+                {
+                    "data"      : "phone",
+                    "name"      : "phone",
+                    "title"     :"电话",
+                    "searchable": true,
+                    "width"     : "8%"
+                },
+                {
+                    "data"      : "status",
+                    "name"      : "status",
+                    "title"     :"状态",
+                    "orderable" : true,
+                    "width"     : "6%",
+                    "render"    : function ( data, type, row ) {
+                        return data==1 ? '<span class="label label-success arrowed arrowed-right">正常</span>' : '<span class="label label-danger arrowed arrowed-right">禁止</span>';
+                    }
+                },
+                {
+                    "data"      : "is_root",
+                    "name"      : "is_root",
+                    "title"     :"超级用户",
+                    "orderable" : true,
+                    "width"     : "6%",
+                    "render"    : function ( data, type, row ) {
+                        return data==1 ? '<span class="label label-success arrowed arrowed-right">是</span>' : '<span class="label label-danger arrowed arrowed-right">否</span>';
+                    }
+                },
+                {
+                    "data"      : "hits",
+                    "name"      : "hits",
+                    "title"     :"登录",
+                    "orderable" : true,
+                    "width"     : "6%",
+                    "render"    : function ( data, type, row ) {
+                        return '<span class="badge badge-primary">'+data+'</span>';
+                    }
+                },
+                {
+                    "data"      : "adddate",
+                    "name"      : "adddate",
+                    "title"     :"注册时间",
+                    "orderable" : true,
+                    "width"     : "10%"
+                },
+                {
+                    "data"      : "last_logindate",
+                    "name"      : "last_logindate",
+                    "title"     :"最后登录",
+                    "orderable" : true,
+                    "width"     : "10%"
+                },
+                {
+                    "data"      :           null,
+                    "title"     :"操作",
+                    "width"     : "12%",
+                    "render"    : function ( data, type, row ) {
+                        var edit_html           ='<a href="{{ webroot_path }}admin/user/show/id/'+row.id+'.html" title="修改" data-href-target="#panelbody" class="ajax-link"><i class="fa fa-pencil"></i> 修改</a>&nbsp;&nbsp;',
+                            rule_html         ='',
+                            delete_html         ='<a href="javascript:;" title="删除" data-param=\'{"id":'+row.id+'}\' class="deletebtn"><i class="fa fa-times"></i> 删除</a>&nbsp;&nbsp;';
+
+                        if (row['is_root']==0) {
+                            rule_html='<a href="{{ webroot_path }}admin/user/rule/userid/'+row.id+'.html" title="权限设置" data-href-target="#panelbody" class="ajax-link"><i class="fa  fa-user-secret"></i> 权限设置</a>';
+                        }
+
+                        return edit_html+delete_html+rule_html;
+                    }
+                }
+            ],
+            "order"                 : [[ 0, "desc" ]]
+        });
+
+        /**
+         * 彻底删除
+         */
+        $(document).off('click', 'a.deletebtn');   // 必须取消全部“click”事件，否则后果很严重~~因为每一次用ajax加载页面时都会为元素添加“click”事件，会导致多次触发多次
+        $(document).on('click', 'a.deletebtn', function(e){
+            var param=(typeof $(this).attr('data-param'))=='string' ? $.parseJSON($(this).attr('data-param')) : $(this).attr('data-param');
+            $.popBox.show({
+                html:'此操作<b style="color: red;">不可逆</b>，确定要继续吗？',
+                submitFn:function(){
+                    doXhr('{{ webroot_path }}admin/user/remove.html', param);
+                }
+            });
+        });
+
+        /**
+         * 执行 按操作的选择发送至服务器
+         */
+        function doXhr(url, data){
+            $.post(url, data, function(data){
+                if (data.ec==200) {
+                    $.tip(data.em, 'success');
+                    data_table.ajax.reload();
+                }else{
+                    $.tip(data.em, 'error');
+                }
+            }, 'json');
+        }
+    });
+</script>

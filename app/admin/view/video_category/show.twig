@@ -1,0 +1,142 @@
+
+<link href="{{static_url}}quirk/lib/bootstrap-fileinput/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css" />
+<!-- canvas-to-blob.min.js is only needed if you wish to resize images before upload.
+     This must be loaded before fileinput.min.js -->
+<script src="{{static_url}}quirk/lib/bootstrap-fileinput/js/plugins/canvas-to-blob.min.js" type="text/javascript"></script>
+<!-- sortable.min.js is only needed if you wish to sort / rearrange files in initial preview.
+     This must be loaded before fileinput.min.js -->
+<script src="{{static_url}}quirk/lib/bootstrap-fileinput/js/plugins/sortable.min.js" type="text/javascript"></script>
+<!-- purify.min.js is only needed if you wish to purify HTML content in your preview for HTML files.
+     This must be loaded before fileinput.min.js -->
+<script src="{{static_url}}quirk/lib/bootstrap-fileinput/js/plugins/purify.js" type="text/javascript"></script>
+<!-- the main fileinput plugin file -->
+<script src="{{static_url}}quirk/lib/bootstrap-fileinput/js/fileinput.min.js"></script>
+<!-- bootstrap.js below is needed if you wish to zoom and view file content
+     in a larger detailed modal dialog -->
+<!-- optionally if you need a theme like font awesome theme you can include
+    it as mentioned below -->
+<script src="{{static_url}}quirk/lib/bootstrap-fileinput/themes/fa/theme.js"></script>
+<!-- optionally if you need translation for your language then include
+    locale file as mentioned below -->
+<script src="{{static_url}}quirk/lib/bootstrap-fileinput/js/locales/zh.js"></script>
+
+
+<link rel="stylesheet" href="{{static_url}}quirk/lib/select2/select2.css">
+
+<hr>
+<form class="form-horizontal" enctype="multipart/form-data">
+    <div class="form-group">
+        <label class="col-sm-3 control-label">所属栏目 <span class="text-danger">*</span></label>
+        <div class="col-sm-8">
+            <select class="select2" name="pid" style="width: 100%" data-placeholder="请选择所属栏目" data-check='noNull' data-tip='请选择所属栏目'>
+                <option value="0">无（作为一级栏目）</option>
+                {% for item in categorys %}
+                    <option value="{{ item.id }}" {% if item.id == map.pid %} selected {% endif %}>{{ item.name }}</option>
+                {% endfor %}
+            </select>
+            <input type="hidden" name="id" value="{{ map.id }}">
+            <input type="hidden" name="pic" value="{{ map.pic['id'] }}">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-3 control-label">栏目名称 <span class="text-danger">*</span></label>
+        <div class="col-sm-8">
+            <input type="text" name="name" value="{{ map.name }}" class="form-control" placeholder="请输入栏目名称" data-check='noNull' data-tip='栏目名称不能为空' />
+        </div>
+    </div>
+
+    <div class="form-group sr-only">
+        <label class="col-sm-3 control-label">ICON </label>
+        <div class="col-sm-8">
+            <input type="text" name="icon" value="{{ map.icon }}" class="form-control" placeholder="如：fa-share-alt-square，更多图标参见：http://fontawesome.io/icons/" />
+        </div>
+    </div>
+
+    <div class="form-group sr-only">
+        <label class="col-sm-3 control-label">栏目图片</label>
+        <div class="col-sm-8">
+            <input type="file" name="pic_up" id="pic_up"  class="form-control" accept="{{ upload_image_accept }}"  />
+        </div>
+    </div>
+
+    <div class="form-group sr-only">
+        <label class="col-sm-3 control-label">栏目描述</label>
+        <div class="col-sm-8">
+            <textarea name="caption" class="form-control" rows="3" placeholder="请输入栏目描述">{{ map.caption }}</textarea>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-3 control-label">页面SEO关键词</label>
+        <div class="col-sm-8">
+            <input type="text" name="keywords" value="{{ map.keywords }}" class="form-control" placeholder="多个关键词用“,”分隔" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-3 control-label">页面SEO描述</label>
+        <div class="col-sm-8">
+            <textarea name="description" class="form-control" rows="3" placeholder="页面SEO描述">{{ map.description }}</textarea>
+        </div>
+    </div>
+
+    <hr>
+
+    <div class="row">
+        <div class="col-sm-9 col-sm-offset-3">
+            <button type="button" data-role="submit" data-type="post" data-target="form" data-action="{{ webroot_path }}admin/video_category/save.html" data-href="{{ webroot_path }}admin/video_category/index.html" data-href-ajax="true" data-href-target="#panelbody" class="btn btn-success btn-quirk btn-wide mr5">保存</button>
+            <button type="reset" class="btn btn-quirk btn-wide btn-default">重置</button>
+        </div>
+    </div>
+
+</form>
+
+<script src="{{static_url}}quirk/lib/select2/select2.js"></script>
+<script src="{{static_url}}quirk/lib/jquery-autosize/autosize.js"></script>
+<script>
+    $(document).ready(function(){
+        $('.select2').select2();
+        $("#select6").select2({ tags: true });
+
+        // Textarea Auto Resize
+        autosize($('textarea[name="description"],textarea[name="caption"]'));
+
+        // 缩略图
+        var pic_up=$('#pic_up');
+        pic_up.fileinput({
+            language                : 'zh',                         //设置语言
+            uploadUrl               : '{{ webroot_path }}admin/upload/upload_pic.html',  //上传地址
+            deleteUrl               : "{{ webroot_path }}admin/upload/delete.html",      //删除地址
+            allowedFileTypes        : ['image'],                    //接收的文件类型
+            allowedFileExtensions   : [{% autoescape false %}{{ upload_image_ext }}{% endautoescape %}],   //接收的文件扩展
+            maxFileSize             : {{ upload_image_maxsize }},                         //单位为kb，如果为0表示不限制文件大小
+            maxFileCount            : 1,                            //表示允许同时上传的最大文件个数
+            uploadAsync             : false,
+            autoReplace             : true,
+            overwriteInitial        : true,
+            validateInitialCount    : true,
+            initialPreviewCount     : 1,
+            showUpload              : false,
+            showRemove              : false,
+            initialCaption          : "只支持上传一张大小不超过{{ upload_image_maxsize }}KB的图片类型文件",
+            uploadExtraData: function() {  // 上传之前将旧的数据ID提交，以便删除操作
+                var out = {"varname" : "pic_up", "pic":$('input[name="pic"]').val()}
+                return out;
+            }{% if map.pic %},
+            initialPreview          : [
+                "<img src='{{ map.pic['url'] }}' class='kv-preview-data file-preview-image' title='{{ map.pic['caption'] }}' alt='{{ map.pic['caption'] }}' style='width:auto;height:160px;'>"
+            ],
+            initialPreviewConfig    : [
+                {caption: '{{ map.pic['caption'] }}', filetype:'{{ map.pic['type'] }}', size:{{ map.pic['size'] }}, extra: {id: {{ map.pic['id'] }}}}
+            ]
+            {% endif%}
+        }).on("filebatchselected", function(event, files) {
+            pic_up.fileinput("upload");
+        }).on('filebatchuploadsuccess', function(event, data, previewId, index){    // 注意：使用该事件需要将uploadAsync设置为false
+            $('input[name="pic"]').val(data['response']['initialPreviewConfig'][0]['extra']['id']);
+        }).on('filedeleted', function(event, key) {
+            $('input[name="pic"]').val('');
+        });
+    });
+</script>

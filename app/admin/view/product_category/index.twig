@@ -1,0 +1,32 @@
+<div class="contentpanel">
+    <ol class="breadcrumb breadcrumb-quirk">
+        {% for item in breadcrumb %}
+            <li><a href="{% if item.url %}{{ item.url }}{% else %}javascript:;{% endif %}">{% if item.icon %}<i class="{{ item.icon }}"></i> {% endif %}{{ item.text }}</a></li>
+        {% endfor %}
+    </ol>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel">
+                <div class="panel-heading">
+                    <div class="btn-group" role="group">
+                        <a href="{{ webroot_path }}admin/product_category/pagelist.html" data-default-click data-href-target="#panelbody" role="button" type="button" class="btn btn-default ajax-link"><i class="fa fa-tachometer"></i> 栏目管理首页</a>
+                        <a href="{{ webroot_path }}admin/product_category/show.html" data-href-target="#panelbody"  role="button" type="button" class="btn btn-default ajax-link"><i class="fa fa-plus"></i> 添加栏目</a>
+                        <a href="javascript:;" role="button" type="button" class="btn btn-default"><i class="fa fa-sort"></i> 一级栏目排序</a>
+                        <a href="javascript:;" role="button" type="button" class="btn btn-default"><i class="fa fa-sort-alpha-asc"></i> N级栏目排序</a>
+                        <a href="javascript:;" role="button" type="button" class="btn btn-default"><i class="fa fa-reply-all"></i> 复位所有栏目</a>
+                        <a href="javascript:;" role="button" type="button" class="btn btn-default"><i class="fa fa-cubes"></i> 栏目合并</a>
+                    </div>
+                </div>
+                <div class="panel-body" id="panelbody">
+                </div>
+            </div><!-- panel -->
+        </div>
+    </div><!-- row -->
+</div><!-- contentpanel -->
+
+<script>
+    $(document).ready(function(){
+        $('[data-default-click]').trigger("click");
+    });
+</script>
