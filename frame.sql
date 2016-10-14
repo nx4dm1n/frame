@@ -58,7 +58,7 @@ CREATE TABLE `fm_article` (
   `keywords` text COMMENT 'SEO-页面关键词',
   `description` text COMMENT 'SEO-页面描述',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=80 DEFAULT CHARSET=utf8 COMMENT='文章系统';
+) ENGINE=InnoDB AUTO_INCREMENT=57 DEFAULT CHARSET=utf8 COMMENT='文章系统';
 
 /*Data for the table `fm_article` */
 
@@ -157,7 +157,7 @@ CREATE TABLE `fm_download` (
 
 /*Data for the table `fm_download` */
 
-insert  into `fm_download`(`id`,`classid`,`title`,`caption`,`content`,`file`,`author`,`order_num`,`hits`,`is_recommend`,`is_pass`,`adddate`,`last_update`,`keywords`,`description`) values (1,1,'租住合同','','',48,'',99999,0,0,1,'0000-00-00 00:00:00','2016-10-10 15:22:07','','');
+insert  into `fm_download`(`id`,`classid`,`title`,`caption`,`content`,`file`,`author`,`order_num`,`hits`,`is_recommend`,`is_pass`,`adddate`,`last_update`,`keywords`,`description`) values (1,1,'关于IT的解释','','',68,'',99999,0,0,1,'0000-00-00 00:00:00','2016-10-14 11:39:50','','');
 
 /*Table structure for table `fm_download_category` */
 
@@ -197,11 +197,11 @@ CREATE TABLE `fm_link` (
   `adddate` timestamp NULL DEFAULT NULL COMMENT '添加日期',
   `last_update` timestamp NULL DEFAULT NULL COMMENT '最后一次修改日期',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='友情链接';
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='友情链接';
 
 /*Data for the table `fm_link` */
 
-insert  into `fm_link`(`id`,`classid`,`title`,`caption`,`url`,`pic`,`order_num`,`hits`,`is_recommend`,`is_pass`,`adddate`,`last_update`) values (1,1,'百度','','http://www.baidu.com/',NULL,99999,0,0,1,'2016-10-10 10:03:43','2016-10-10 10:03:43'),(2,2,'信用中国','','http://www.sina.com.cn',11,99999,0,0,1,'2016-10-10 10:09:13','2016-10-10 10:09:13');
+insert  into `fm_link`(`id`,`classid`,`title`,`caption`,`url`,`pic`,`order_num`,`hits`,`is_recommend`,`is_pass`,`adddate`,`last_update`) values (1,1,'百度','','http://www.baidu.com/',NULL,99999,0,0,1,'2016-10-10 10:03:43','2016-10-10 10:03:43'),(2,2,'信用中国','','http://www.sina.com.cn',11,99999,0,0,1,'2016-10-10 10:09:13','2016-10-10 10:09:13'),(3,1,'新浪','','http://www.sina.com.cn',NULL,99999,0,0,0,'2016-10-14 11:54:37','2016-10-14 11:54:42');
 
 /*Table structure for table `fm_menu` */
 
@@ -242,7 +242,7 @@ CREATE TABLE `fm_news` (
   `keywords` text COMMENT 'SEO-页面关键词',
   `description` text COMMENT 'SEO-页面描述',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='新闻系统';
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='新闻系统';
 
 /*Data for the table `fm_news` */
 
@@ -356,11 +356,11 @@ CREATE TABLE `fm_upload` (
   `type` varchar(255) DEFAULT NULL COMMENT '文件类型',
   `adddate` timestamp NULL DEFAULT NULL COMMENT '添加日期',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=68 DEFAULT CHARSET=utf8 COMMENT='文件上传';
+) ENGINE=InnoDB AUTO_INCREMENT=69 DEFAULT CHARSET=utf8 COMMENT='文件上传';
 
 /*Data for the table `fm_upload` */
 
-insert  into `fm_upload`(`id`,`caption`,`size`,`url`,`type`,`adddate`) values (1,'Penguins.jpg',777835,'upload/image/2016-09-28/57eb54d8f13f1.jpg','image/jpeg','2016-09-28 13:27:52'),(4,'QQ图片20160829093157.jpg',363261,'upload/image/2016-10-09/57f9e1abde2ce.jpg','image/jpeg','2016-10-09 14:20:27'),(6,'域名证书.jpg',134405,'upload/image/2016-10-09/57f9eacac1dcf.jpg','image/jpeg','2016-10-09 14:59:22'),(7,'QQ图片20160922182735.jpg',190589,'upload/image/2016-10-09/57f9ead067b55.jpg','image/jpeg','2016-10-09 14:59:28'),(9,'QQ图片20160829093157.jpg',363261,'upload/image/2016-10-09/57f9eb89621fa.jpg','image/jpeg','2016-10-09 15:02:33'),(10,'creditchina.gif',4160,'upload/image/2016-10-10/57faf7edce59a.gif','image/gif','2016-10-10 10:07:41'),(11,'creditchina.gif',4160,'upload/image/2016-10-10/57faf8486dbac.gif','image/gif','2016-10-10 10:09:12'),(12,'2.jpg',129348,'upload/image/2016-10-10/57fafd5fb2b15.jpg','image/jpeg','2016-10-10 10:30:55'),(13,'786_1953437_112706.jpg',190201,'upload/image/2016-10-10/57fb07d8720ff.jpg','image/jpeg','2016-10-10 11:15:36'),(14,'786_1953437_112706.jpg',181603,'upload/image/2016-10-10/57fb0a3b2e3fa.jpg','image/jpeg','2016-10-10 11:25:47'),(15,'786_1953437_112706.jpg',181603,'upload/image/2016-10-10/57fb0a4e13a9c.jpg','image/jpeg','2016-10-10 11:26:05'),(16,'786_1953430_924910.jpg',192142,'upload/image/2016-10-10/57fb0a4e1aa8a.jpg','image/jpeg','2016-10-10 11:26:05'),(17,'786_1953406_419480.jpg',167439,'upload/image/2016-10-10/57fb0a4e2733c.jpg','image/jpeg','2016-10-10 11:26:05'),(48,'房屋租赁合同.doc',32256,'upload/file/2016-10-10/57fb419ca11c6.doc','application/msword','2016-10-10 15:22:04'),(52,'微博视频.mp4',2310129,'upload/file/2016-10-10/57fb54b6d9fe6.mp4','video/mp4','2016-10-10 16:43:34'),(53,'微博视频.mp4',2310129,'upload/video/2016-10-10/57fb5a3b3cd5c.mp4','video/mp4','2016-10-10 17:07:07'),(54,'Koala.jpg',780831,'upload/image/2016-10-10/57fb5cd7d16a0.jpg','image/jpeg','2016-10-10 17:18:15'),(55,'pp.jpg',4245,'upload/image/2016-10-10/57fb5daf7764d.jpg','image/jpeg','2016-10-10 17:21:51'),(56,'logo.jpg',6290,'upload/image/2016-10-10/57fb5dd0b5ee5.jpg','image/jpeg','2016-10-10 17:22:24'),(57,'menuline.jpg',323,'upload/image/2016-10-10/57fb5dd0ca82a.jpg','image/jpeg','2016-10-10 17:22:24'),(58,'logo.jpg',6290,'upload/image/2016-10-10/57fb5defd0ef4.jpg','image/jpeg','2016-10-10 17:22:55'),(59,'pp.jpg',4245,'upload/image/2016-10-10/57fb5df004189.jpg','image/jpeg','2016-10-10 17:22:55'),(60,'微博视频.mp4',2310129,'upload/video/2016-10-10/57fb5e00d52dd.mp4','video/mp4','2016-10-10 17:23:12'),(61,'公积金支付房租流程及材料.docx',363373,'upload/file/2016-10-10/57fb5e0f02f2e.docx','application/vnd.openxmlformats-officedocument.wordprocessingml.document','2016-10-10 17:23:26'),(62,'张庆-季度目标设定及考核表-20160929.xlsx',52030,'upload/file/2016-10-10/57fb5e0f2fe42.xlsx','application/vnd.openxmlformats-officedocument.spreadsheetml.sheet','2016-10-10 17:23:26'),(63,'user1.png',7593,'upload/image/2016-10-10/57fb635a2b3ad.png','image/png','2016-10-10 17:46:01'),(64,'ueditor涂鸦',6328,'upload/scrawl/2016-10-11/57fc43d453aa1.jpg','image/jpeg','2016-10-11 09:43:38'),(65,'ueditor涂鸦',3909,'upload/scrawl/2016-10-11/57fc44627364f.jpg','image/jpeg','2016-10-11 09:46:06'),(66,'ueditor涂鸦',6473,'upload/scrawl/2016-10-11/57fc4671a5a8d.png','image/png','2016-10-11 09:54:57'),(67,'ueditor涂鸦',150631,'upload/scrawl/2016-10-11/57fc4b018c19a.png','image/png','2016-10-11 10:14:25');
+insert  into `fm_upload`(`id`,`caption`,`size`,`url`,`type`,`adddate`) values (1,'Penguins.jpg',777835,'upload/image/2016-09-28/57eb54d8f13f1.jpg','image/jpeg','2016-09-28 13:27:52'),(4,'QQ图片20160829093157.jpg',363261,'upload/image/2016-10-09/57f9e1abde2ce.jpg','image/jpeg','2016-10-09 14:20:27'),(6,'域名证书.jpg',134405,'upload/image/2016-10-09/57f9eacac1dcf.jpg','image/jpeg','2016-10-09 14:59:22'),(7,'QQ图片20160922182735.jpg',190589,'upload/image/2016-10-09/57f9ead067b55.jpg','image/jpeg','2016-10-09 14:59:28'),(9,'QQ图片20160829093157.jpg',363261,'upload/image/2016-10-09/57f9eb89621fa.jpg','image/jpeg','2016-10-09 15:02:33'),(10,'creditchina.gif',4160,'upload/image/2016-10-10/57faf7edce59a.gif','image/gif','2016-10-10 10:07:41'),(11,'creditchina.gif',4160,'upload/image/2016-10-10/57faf8486dbac.gif','image/gif','2016-10-10 10:09:12'),(12,'2.jpg',129348,'upload/image/2016-10-10/57fafd5fb2b15.jpg','image/jpeg','2016-10-10 10:30:55'),(13,'786_1953437_112706.jpg',190201,'upload/image/2016-10-10/57fb07d8720ff.jpg','image/jpeg','2016-10-10 11:15:36'),(14,'786_1953437_112706.jpg',181603,'upload/image/2016-10-10/57fb0a3b2e3fa.jpg','image/jpeg','2016-10-10 11:25:47'),(15,'786_1953437_112706.jpg',181603,'upload/image/2016-10-10/57fb0a4e13a9c.jpg','image/jpeg','2016-10-10 11:26:05'),(16,'786_1953430_924910.jpg',192142,'upload/image/2016-10-10/57fb0a4e1aa8a.jpg','image/jpeg','2016-10-10 11:26:05'),(17,'786_1953406_419480.jpg',167439,'upload/image/2016-10-10/57fb0a4e2733c.jpg','image/jpeg','2016-10-10 11:26:05'),(52,'微博视频.mp4',2310129,'upload/file/2016-10-10/57fb54b6d9fe6.mp4','video/mp4','2016-10-10 16:43:34'),(53,'微博视频.mp4',2310129,'upload/video/2016-10-10/57fb5a3b3cd5c.mp4','video/mp4','2016-10-10 17:07:07'),(54,'Koala.jpg',780831,'upload/image/2016-10-10/57fb5cd7d16a0.jpg','image/jpeg','2016-10-10 17:18:15'),(55,'pp.jpg',4245,'upload/image/2016-10-10/57fb5daf7764d.jpg','image/jpeg','2016-10-10 17:21:51'),(56,'logo.jpg',6290,'upload/image/2016-10-10/57fb5dd0b5ee5.jpg','image/jpeg','2016-10-10 17:22:24'),(57,'menuline.jpg',323,'upload/image/2016-10-10/57fb5dd0ca82a.jpg','image/jpeg','2016-10-10 17:22:24'),(58,'logo.jpg',6290,'upload/image/2016-10-10/57fb5defd0ef4.jpg','image/jpeg','2016-10-10 17:22:55'),(59,'pp.jpg',4245,'upload/image/2016-10-10/57fb5df004189.jpg','image/jpeg','2016-10-10 17:22:55'),(60,'微博视频.mp4',2310129,'upload/video/2016-10-10/57fb5e00d52dd.mp4','video/mp4','2016-10-10 17:23:12'),(61,'公流程及材料.docx',363373,'upload/file/2016-10-10/57fb5e0f02f2e.docx','application/vnd.openxmlformats-officedocument.wordprocessingml.document','2016-10-10 17:23:26'),(62,'目标设定及考核表-20160929.xlsx',52030,'upload/file/2016-10-10/57fb5e0f2fe42.xlsx','application/vnd.openxmlformats-officedocument.spreadsheetml.sheet','2016-10-10 17:23:26'),(63,'user1.png',7593,'upload/image/2016-10-10/57fb635a2b3ad.png','image/png','2016-10-10 17:46:01'),(64,'ueditor涂鸦',6328,'upload/scrawl/2016-10-11/57fc43d453aa1.jpg','image/jpeg','2016-10-11 09:43:38'),(65,'ueditor涂鸦',3909,'upload/scrawl/2016-10-11/57fc44627364f.jpg','image/jpeg','2016-10-11 09:46:06'),(66,'ueditor涂鸦',6473,'upload/scrawl/2016-10-11/57fc4671a5a8d.png','image/png','2016-10-11 09:54:57'),(67,'ueditor涂鸦',150631,'upload/scrawl/2016-10-11/57fc4b018c19a.png','image/png','2016-10-11 10:14:25'),(68,'关于IT的解释.doc',16384,'upload/file/2016-10-14/5800538115b72.doc','application/msword','2016-10-14 11:39:45');
 
 /*Table structure for table `fm_user` */
 
@@ -387,7 +387,7 @@ CREATE TABLE `fm_user` (
 
 /*Data for the table `fm_user` */
 
-insert  into `fm_user`(`id`,`username`,`password`,`is_root`,`rule`,`mail`,`name`,`sex`,`phone`,`caption`,`status`,`hits`,`adddate`,`last_logindate`,`pic`) values (2,'admin','21232f297a57a5a743894a0e4a801fc3',1,NULL,'490702087@qq.com','度月飞天','1','15151510866','初始用户',1,44,'2016-09-21 12:04:59','2016-10-11 13:38:16',63),(3,'qing','834af260d56e6b7b01199548065ac7da',0,'1,3,5','46548@qq.com','庆哥','1','15151510866','新加测试用户',1,1,'2016-09-23 14:08:48','2016-09-23 17:35:01',0),(10,'zhao','77e6789426d131e4d862ecac4c7d0c5d',0,NULL,'','','1','','',1,0,'2016-10-09 14:20:29',NULL,0),(11,'zhao','77e6789426d131e4d862ecac4c7d0c5d',0,NULL,'','','1','','',1,0,'2016-10-09 14:20:51',NULL,4);
+insert  into `fm_user`(`id`,`username`,`password`,`is_root`,`rule`,`mail`,`name`,`sex`,`phone`,`caption`,`status`,`hits`,`adddate`,`last_logindate`,`pic`) values (2,'admin','21232f297a57a5a743894a0e4a801fc3',1,NULL,'490702087@qq.com','度月飞天','1','15151510866','初始用户',1,57,'2016-09-21 12:04:59','2016-10-14 11:53:22',63),(3,'qing','834af260d56e6b7b01199548065ac7da',0,'1,3,5','46548@qq.com','庆哥','1','15151510866','新加测试用户',1,1,'2016-09-23 14:08:48','2016-09-23 17:35:01',0),(10,'zhao','77e6789426d131e4d862ecac4c7d0c5d',0,NULL,'','','1','','',1,0,'2016-10-09 14:20:29',NULL,0),(11,'zhao','77e6789426d131e4d862ecac4c7d0c5d',0,NULL,'','','1','','',1,0,'2016-10-09 14:20:51',NULL,4);
 
 /*Table structure for table `fm_video` */
 
