@@ -67,9 +67,9 @@ class UploadTool extends Tool{
         }
         $path_parts  =  pathinfo ( $file['name'] );
 
-        $upload_image_ext=explode('|', C('UPLOAD_'.$type.'_EXT'));
+        $upload_image_ext=explode('|', strtolower(C('UPLOAD_'.$type.'_EXT')));
 
-        if (false===in_array($path_parts['extension'], $upload_image_ext)) {
+        if (false===in_array(strtolower($path_parts['extension']), $upload_image_ext)) {
             $ret['em']='只支持 '.implode('、', $upload_image_ext).' 扩展的文件';
             return $ret;
         }
@@ -113,13 +113,11 @@ class UploadTool extends Tool{
         );
 
         if (is_file($file)) {
-            if (unlink($file)) {
-                $ret['ec']=200;
-                $ret['em']='删除成功';
-            }
-        }else{
-            $ret['em']='不是一个有效的文件';
+            unlink($file);
         }
+
+        $ret['ec']=200;
+        $ret['em']='删除成功';
 
         return $ret;
     }

@@ -230,6 +230,16 @@
             $(this).nextAll().removeClass('btn-success');
             $(this).addClass('btn-success');
         });
+
+        /**
+         * 绑定回车自动提交事件
+         */
+        $(document).bind('keydown',function(event) {
+            if (event.keyCode == 13) {
+                event.preventDefault();
+                $('button[data-role="submit"]').trigger('click');
+            }
+        });
     });
 </script>
 </body>
