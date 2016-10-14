@@ -20,5 +20,11 @@
         "catfan/medoo": "^1.1",
         "phpmailer/phpmailer": "^5.2",
         "elasticsearch/elasticsearch": "^2.2"
+    },
+    "repositories": {
+        "packagist": {
+            "type": "composer",
+            "url": "https://packagist.phpcomposer.com"
+        }
     }
 }

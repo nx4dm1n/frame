@@ -139,10 +139,8 @@ class UploadModel extends Model{
         );
 
         $ret=$this->delete($this->table, $where);
-        if ($ret) {
-            $data['ec']=200;
-            $data['em']='删除成功';
-        }
+        $data['ec']=200;
+        $data['em']='删除成功';
 
         return $data;
     }

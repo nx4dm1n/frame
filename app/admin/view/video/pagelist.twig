@@ -17,13 +17,17 @@
             "dom": '<"row"<"col-sm-1"l><"col-sm-1"<"toolbar-category">><"col-sm-1"<"toolbar-select">><"col-sm-1"<"toolbar-action">><"col-sm-8"f>><"row"<"col-sm-12"tr>><"row"<"col-sm-5"i><"col-sm-7"p>>',
             "processing"            : true,
             "serverSide"            : true,
-            "ajax"                  : {
-                "url"           : "{{ webroot_path }}admin/video/pagelist/is_pass/{{ is_pass }}.html",
-                "type"          : "POST"
-                //,
-                //"data": function ( d ) {
-                //    d.is_pass = {{ is_pass }}
-                //}
+            "ajax"                  : function(data, callback, settings){
+                $.when($.ajax({
+                    url         : "{{ webroot_path }}admin/video/pagelist/is_pass/{{ is_pass }}.html",
+                    data        : data,
+                    type        : 'post',
+                    cache       : false,
+                    dataType    : "json",
+                    async       : true
+                })).done(function(data){
+                    callback(data);
+                });
             },
             "lengthMenu": [[20, 40, 60, -1], [20, 40, 60, "全部"]],
             "searchDelay"           : 1500,
