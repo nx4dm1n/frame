@@ -15,17 +15,9 @@
             "language"              : {"url":"{{static_url}}quirk/lib/datatables/local/ch.json"},
             "processing"            : true,
             "serverSide"            : true,
-            "ajax"                  : function(data, callback, settings){
-                $.when($.ajax({
-                    url         : "{{ webroot_path }}admin/user/pagelist.html",
-                    data        : data,
-                    type        : 'post',
-                    cache       : false,
-                    dataType    : "json",
-                    async       : true
-                })).done(function(data){
-                    callback(data);
-                });
+            "ajax"                  : {
+                "url"           : "{{ webroot_path }}admin/user/pagelist.html",
+                "type"          : "POST"
             },
             "lengthMenu": [[20, 40, 60, -1], [20, 40, 60, "全部"]],
             "searchDelay"           : 1500,
