@@ -18,7 +18,11 @@ class IndexController extends Controller{
 
 
     public function index(){
-        $this->checkSignature();
+        $echoStr = $_GET["echostr"];
+        if($this->checkSaddignature()){
+            echo $echoStr;
+            exit;
+        }
     }
 
     private function checkSignature()
