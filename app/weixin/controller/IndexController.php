@@ -10,6 +10,7 @@ namespace app\weixin\controller;
 use core\lib\Controller;
 
 class IndexController extends Controller{
+    const TOKEN='jKGU5LN7MZjJgA1Dnfdw6KX6F70O1zYe';
 
     public function __construct()
     {
@@ -18,6 +19,25 @@ class IndexController extends Controller{
 
 
     public function index(){
-        echo 'dddd';
+        $this->checkSignature();
+    }
+
+    private function checkSignature()
+    {
+        $signature  = $_GET["signature"];
+        $timestamp  = $_GET["timestamp"];
+        $nonce      = $_GET["nonce"];
+
+        $token = self::TOKEN;
+        $tmpArr = array($token, $timestamp, $nonce);
+        sort($tmpArr, SORT_STRING);
+        $tmpStr = implode( $tmpArr );
+        $tmpStr = sha1( $tmpStr );
+
+        if( $tmpStr == $signature ){
+            return true;
+        }else{
+            return false;
+        }
     }
 }
