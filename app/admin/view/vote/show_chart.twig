@@ -1,0 +1,22 @@
+
+<div class="contentpanel">
+    <ol class="breadcrumb breadcrumb-quirk">
+        {% for item in breadcrumb %}
+            <li><a href="{% if item.url %}{{ item.url }}{% else %}javascript:;{% endif %}">{% if item.icon %}<i class="{{ item.icon }}"></i> {% endif %}{{ item.text }}</a></li>
+        {% endfor %}
+    </ol>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel">
+                <div class="panel-body" id="panelbody">
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
+                            <span>40%</span>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- panel -->
+        </div>
+    </div><!-- row -->
+</div><!-- contentpanel -->

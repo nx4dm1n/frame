@@ -1,0 +1,54 @@
+
+<hr>
+<form class="form-horizontal" enctype="multipart/form-data">
+ 
+
+    <div class="form-group">
+        <label class="col-sm-3 control-label">选项标题 <span class="text-danger">*</span></label>
+        <div class="col-sm-8">
+            <input type="hidden" name="id" value="{{ map.id }}">
+            <input type="text" name="title" value="{{ map.title }}" class="form-control" placeholder="请输入选项标题" data-check='noNull' data-tip='选项标题不能为空' />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-3 control-label">票数 <span class="text-danger">*</span></label>
+        <div class="col-sm-8">
+            <input type="number" name="votes" value="{{ map.votes }}" class="form-control" placeholder="请输入票数" data-check='noNull,onlyNum' data-tip='票数不能为空' />
+            <span class="help-block text-warning">初始值为0</span>
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        <label class="col-sm-3 control-label">选项排序 <span class="text-danger">*</span></label>
+        <div class="col-sm-8">
+            <input type="number" name="order_num" value="{{ map.order_num }}" class="form-control" placeholder="请输入选项排序" data-check='noNull,onlyNum' data-tip='选项排序不能为空' />
+            <span class="help-block text-warning">数值越小，排序越靠前</span>
+        </div>
+    </div>
+
+    <hr>
+
+    <div class="row">
+        <div class="col-sm-9 col-sm-offset-3">
+            <button type="button" data-role="submit" data-type="post" data-target="form" data-action="{{ webroot_path }}admin/vote/save.html" data-href="{{ webroot_path }}admin/vote/index.html" data-href-ajax="true" data-href-target="#panelbody" class="btn btn-success btn-quirk btn-wide mr5">保存</button>
+            <button type="reset" class="btn btn-quirk btn-wide btn-default">重置</button>
+        </div>
+    </div>
+
+</form>
+
+<script>
+    $(document).ready(function(){
+        $('.select2').select2();
+        $("#select6").select2({ tags: true });
+
+
+        // Textarea Auto Resize
+        autosize($('textarea[name="description"],textarea[name="caption"]'));
+
+
+
+    });
+</script>
