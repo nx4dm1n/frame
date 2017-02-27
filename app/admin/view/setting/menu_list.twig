@@ -2,14 +2,18 @@
     <table class="table table-bordered table-inverse nomargin table-hover">
         <thead>
         <tr>
-            <th class="text-center">栏目名称</th>
-            <th class="text-center">操作选项</th>
+            <th class="text-center">名称</th>
+            <th class="text-center">是否启用</th>
+            <th class="text-center">排序</th>
+            <th class="text-center">操作</th>
         </tr>
         </thead>
         <tbody>
         {% for item in allmenu %}
             <tr>
                 <td>{{ item.name }}</td>
+                <td>{{ item.isvalid ? '<span class="text-success">启用</span>' : '<span class="text-danger">禁用</span>' }}</td>
+                <td>{{ item.sorting }}</td>
                 <td class="text-left">
                     <ul class="table-options">
                         {% if item.pid == 0 %}

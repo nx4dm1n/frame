@@ -20,8 +20,10 @@ class SettingManager extends Manager{
         $name       =I('name');
         $url        =I('url');
         $icon       =I('icon');
+        $sorting    =I('sorting');
+        $isvalid    =I('isvalid');
 
-        $ret=$this->ctx->MenuModel->saveMenu($id, $pid, $name, $url, $icon);
+        $ret=$this->ctx->MenuModel->saveMenu($id, $pid, $name, $url, $icon, $sorting, $isvalid);
 
         return $ret;
     }
@@ -34,14 +36,15 @@ class SettingManager extends Manager{
      * @param string $delimiter         用什么符号表示层次关系
      * @param boolean $root_delimiter    根结果是否添加 $delimiter 来表示层次关系
      * @param array  $result            结果保存
+     * @param string  $isvalid            筛选：是否有效，1---有，0---无,空---全部
      *
      * @return array
      * @author zhang qing <490702087@qq.com>
      */
-    public function getMenu($pid=0, $delimiter='──',$spac=0,  $root_delimiter=false, &$result=array()){
+    public function getMenu($pid=0, $delimiter='──',$spac=0,  $root_delimiter=false, $isvalid="", &$result=array()){
         $spac++;
 
-        $ret=$this->ctx->MenuModel->getMenu($pid);
+        $ret=$this->ctx->MenuModel->getMenu($pid, $isvalid);
 
         foreach ($ret as $key=>$item) {
             if ($delimiter!=='') {
@@ -56,7 +59,7 @@ class SettingManager extends Manager{
 
             $result[]=$item;
 
-            $this->getMenu($item['id'], $delimiter, $spac, $root_delimiter, $result);
+            $this->getMenu($item['id'], $delimiter, $spac, $root_delimiter, $isvalid, $result);
         }
 
         return $result;
@@ -87,6 +90,7 @@ class SettingManager extends Manager{
         );
         $config   =I('post.config');
 
+
         if (!empty($config) && is_array($config)) {
             $config=array_change_key_case($config, CASE_UPPER);
             $content='<?php'.PHP_EOL;
@@ -96,10 +100,13 @@ class SettingManager extends Manager{
  * @since  '.date('Y-m-d H:i:s').'
  */'.PHP_EOL;
             $content.='return ';
-            $content.=var_export($config, true);
+            $content.=html_entity_decode(var_export($config, true));
             $content.=';';
 
             $content=str_replace(array('\'\\\'', '\\\'\'', '\'true\'', '\'false\''), array('\'', '\'', 'true', 'false'), $content);
+
+
+
 
             $saveret=file_put_contents(MODULE_COMMON_PATH.'config'.DIRECTORY_SEPARATOR.'config.php', $content);
 

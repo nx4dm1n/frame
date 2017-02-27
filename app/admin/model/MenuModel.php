@@ -18,16 +18,17 @@ class MenuModel extends Model{
     /**
      * 保存
      *
-     * @param $id
-     * @param $pid
-     * @param $name
-     * @param $url
-     * @param $icon
+     * @param        $id
+     * @param        $pid
+     * @param        $name
+     * @param string $url
+     * @param string $icon
+     * @param string $sorting
      *
      * @return array
-     * @author zhang qing <490702087@qq.com>
+     * @author zhang.qing <zhang.qing@immomo.com>
      */
-    public function saveMenu($id, $pid, $name, $url='', $icon=''){
+    public function saveMenu($id, $pid, $name, $url='', $icon='', $sorting=99999, $isvalid=1){
         $data=array(
             'ec'        => 500,
             'em'        => '保存失败'
@@ -38,8 +39,19 @@ class MenuModel extends Model{
             return $data;
         }
 
+
         if (empty($name)) {
             $data['em']='请填写栏目名称';
+            return $data;
+        }
+
+        if (!is_numeric($sorting) || $sorting<0) {
+            $data['em']='请输入排序';
+            return $data;
+        }
+
+        if (!is_numeric($isvalid) || ($isvalid<0 || $isvalid>1)) {
+            $data['em']='参数：“是否启用” 非法';
             return $data;
         }
 
@@ -48,6 +60,8 @@ class MenuModel extends Model{
             'name'=>$name,
             'url'=>$url,
             'icon'=>$icon,
+            'sorting'=>$sorting,
+            'isvalid'=>$isvalid,
         );
 
         if (empty($id)) {
@@ -76,12 +90,26 @@ class MenuModel extends Model{
      * 查找菜单
      *
      * @param int $pid
+     * @param string $isvalid
      *
      * @return mixed
      * @author zhang qing <490702087@qq.com>
      */
-    public function getMenu($pid=0){
-        $ret=$this->select($this->table, '*', array('pid'=>$pid));
+    public function getMenu($pid=0, $isvalid=""){
+        $where=array(
+            'AND'=>array(
+                'pid'=>$pid
+            ),
+            'ORDER'=>array(
+                'sorting'=>'ASC',
+                'id'=>'ASC'
+            )
+        );
+
+        if ($isvalid!=='') {
+            $where['AND']['isvalid']=$isvalid;
+        }
+        $ret=$this->select($this->table, '*', $where);
         return $ret;
     }
 
@@ -95,6 +123,18 @@ class MenuModel extends Model{
      */
     public function findMenu($id){
         $ret=$this->get($this->table, '*', array('id'=>$id));
+        return $ret;
+    }
+
+    /**
+     * 根据ID获取单条menu数据
+     *
+     * @param $id
+     *
+     * @author zhang qing <490702087@qq.com>
+     */
+    public function findMenu2($columns='*', $where=array()){
+        $ret=$this->get($this->table, $columns, $where);
         return $ret;
     }
 
