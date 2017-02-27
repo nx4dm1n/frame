@@ -2,10 +2,10 @@
 /**
  * 所有模块公用配置，由后台《系统设置》生成
  * @author zhang qing <490702087@qq.com>
- * @since  2016-10-12 12:04:32
+ * @since  2017-02-27 15:42:27
  */
 return array (
-  'SITE_NAME' => '企业网站系统',
+  'SITE_NAME' => 'GM管理系统',
   'SITE_TITLE' => '你是他的',
   'SITE_KEYWORDS' => '企业MVC框架',
   'SITE_DESCRIPTION' => '简单实用就好~',

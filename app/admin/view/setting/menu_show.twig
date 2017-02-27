@@ -1,4 +1,3 @@
-<link rel="stylesheet" href="{{static_url}}quirk/lib/select2/select2.css">
 
 <hr>
 <form class="form-horizontal">
@@ -36,6 +35,24 @@
         </div>
     </div>
 
+    <div class="form-group">
+        <label class="col-sm-3 control-label">排序</label>
+        <div class="col-sm-8">
+            <input type="number" name="sorting" value="{{ sorting }}" class="form-control" placeholder="请输入排序" />
+            <span class="help-block text-warning">数值越小，排名越先前</span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-3 control-label nopaddingtop">是否启用</label>
+        <div class="col-sm-8">
+            <div class="toggle-wrapper">
+                <div class="toggle toggle-modern primary"></div>
+            </div>
+            <input type="hidden" name="isvalid" value="{{ isvalid }}">
+        </div>
+    </div>
+
     <hr>
 
     <div class="row">
@@ -47,9 +64,33 @@
 
 </form>
 
-<script src="{{static_url}}quirk/lib/select2/select2.js"></script>
 <script>
     $(document).ready(function(){
         $('.select2').select2();
+
+        $('.toggle').toggles({
+            drag: true, // allow dragging the toggle between positions
+            click: true, // allow clicking on the toggle
+            text: {
+                on: '启用', // text for the ON position
+                off: '禁用' // and off
+            },
+            on: {{ isvalid }}, // is the toggle ON on init
+            //animate: 250, // animation time (ms)
+            //easing: 'swing', // animation transition easing function
+            //checkbox: null, // the checkbox to toggle (for use in forms)
+            //clicker: null, // element that can be clicked on to toggle. removes binding from the toggle itself (use nesting)
+            //width: 50, // width used if not set in css
+            height: 26, // height if not set in css
+            //type: 'compact' // if this is set to 'select' then the select style toggle will be used
+        });
+
+        $('.toggle').on('toggle', function(e, active) {
+            if (active) {
+                $('input[name="isvalid"]').val('1');
+            } else {
+                $('input[name="isvalid"]').val('0');
+            }
+        });
     });
 </script>

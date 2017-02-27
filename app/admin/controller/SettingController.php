@@ -14,6 +14,7 @@ class SettingController extends CommonController{
         $this->breadcrumb[]=array(
             'text'  =>'系统设置'
         );
+
     }
 
     /**
@@ -54,11 +55,15 @@ class SettingController extends CommonController{
                 $this->assign('pid', $ret['pid']);
                 $this->assign('url', $ret['url']);
                 $this->assign('icon', $ret['icon']);
+                $this->assign('sorting', $ret['sorting']);
+                $this->assign('isvalid', $ret['isvalid']);
             }
         }else{
             if (!empty($pid)) {
                 $this->assign('pid', $pid);
             }
+            $this->assign('sorting', 99999);
+            $this->assign('isvalid', 1);
         }
 
         $ret=$this->ctx->SettingManager->getMenu();

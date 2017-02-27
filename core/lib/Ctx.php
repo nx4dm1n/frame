@@ -21,6 +21,7 @@
  * @property app\admin\manager\LinkManager       $LinkManager
  * @property app\admin\manager\AdManager       $AdManager
  * @property app\admin\manager\UploadManager       $UploadManager
+ * @property app\admin\manager\VoteManager       $VoteManager
  *
  * @property app\admin\model\UserModel              $UserModel
  * @property app\admin\model\MenuModel              $MenuModel
@@ -40,6 +41,7 @@
  * @property app\admin\model\CaseCategoryModel              $CaseCategoryModel
  * @property app\admin\model\ProductCategoryModel              $ProductCategoryModel
  * @property app\admin\model\UploadModel              $UploadModel
+ * @property app\admin\model\VoteModel              $VoteModel
  *
  * @property core\lib\tool\UploadTool               $UploadTool
  * @property core\lib\tool\PHPMailerTool               $PHPMailerTool
