@@ -75,7 +75,7 @@ class VoteManager extends Manager{
         }
         $result=$this->ctx->VoteModel->getAll('*', $where);
 
-        $total_vote=$this->ctx->VoteModel->sumVote('votes');
+        $total_vote=$this->ctx->VoteModel->sumVote('votes', array('is_pass'=>1));
 
 
         foreach ($result as $key=>$record) {
