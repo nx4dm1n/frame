@@ -57,7 +57,7 @@
                     mimeType    : 'text/html; charset=utf-8', // ! Need set mimeType only when run from local file
                     url         : url,
                     type        : 'GET',
-                    cache       : false,
+                    //cache       : false,
                     beforeSend  : function(){
                         $(target).empty();
                         $(target).html('<div class="preloader"><i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span class="sr-only">Loading...</span></div>');
