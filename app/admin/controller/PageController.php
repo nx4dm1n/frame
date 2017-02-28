@@ -99,6 +99,28 @@ class PageController extends CommonController{
         $ret=$this->ctx->PageManager->setRecommend();
         $this->ajaxReturn($ret);
     }
+	
+	/**
+     * 单页直显
+     * @author zhang.qing <zhang.qing@immomo.com>
+     */
+    public function single(){
+        $this->assign('upload_image_accept', 'image/'.str_replace('|', ', image/', C('UPLOAD_IMAGE_EXT')));
+        $this->assign('upload_image_ext', '"'.str_replace('|', '","', C('UPLOAD_IMAGE_EXT')).'"');
+        $this->assign('upload_image_maxsize', C('UPLOAD_IMAGE_MAXSIZE'));
+        $this->breadcrumb[]=array(
+            'text'  =>'产品简介'
+        );
+        $this->assign('breadcrumb', $this->breadcrumb);
+
+        $map=$this->ctx->PageModel->findByShow(I('id'));
+        if ($map['pic']) {
+            $map['pic']=$this->ctx->UploadModel->getPicRecord($map['pic']);
+        }
+        $this->assign('map', $map);
+
+        $this->display();
+    }
 
     /**
      * 文章管理-删除记录
